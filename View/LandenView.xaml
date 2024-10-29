@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="Landen.View.LandenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Landen.View"
+             mc:Ignorable="d"
+             xmlns:viewmodel="clr-namespace:Landen.ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodel:LandenViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Column="0" ItemsSource="{Binding Landen}" 
+                  SelectedItem="{Binding SelectedLand}" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  Margin="0,0,10,0"
+                  IsReadOnly="True">
+            <DataGrid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="LightBlue" Offset="0"/>
+                    <GradientStop Color="DodgerBlue" Offset="1"/>
+                </LinearGradientBrush>
+            </DataGrid.Background>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Naam" Binding="{Binding Naam}" Width="*" />
+                <DataGridTextColumn Header="Eerste Taal" Binding="{Binding EersteTaal}" Width="*"/>
+                <DataGridTextColumn Header="Populatie" Binding="{Binding AantalInwooners}" Width="*"/>
+                <DataGridTextColumn Header="Populatie Datum" Binding="{Binding AantalInwoonersDatum, StringFormat={}{0:dd-MM-yyyy}}" Width="*"/>
+                <DataGridTextColumn Header="Hoofdstad" Binding="{Binding Hooftstad}" Width="*"/>
+                <DataGridTextColumn Header="BNP" Binding="{Binding Bnp}" Width="*"/>
+                <DataGridTextColumn Header="BNP datum" Binding="{Binding BnpDatum, StringFormat={}{0:dd-MM-yyyy}}" Width="*"/>
+                <DataGridTextColumn Header="Land Gevonden Op" Binding="{Binding Gevonden, StringFormat={}{0:dd-MM-yyyy}}" Width="*"/>
+                <DataGridTemplateColumn Header="verwijderen" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.DeleteLandCommand, 
+                                RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                    CommandParameter="{Binding}" 
+                                    Style="{StaticResource MaterialDesignIconButton}">
+                                <Button.Content>
+                                    <materialDesign:PackIcon Kind="Delete" Width="16" Height="16"/>
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Data Entry Section -->
+        <ScrollViewer Grid.Column="1" Margin="10,0,10,0" >
+            <StackPanel Orientation="Vertical" >
+                <StackPanel.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="LightBlue" Offset="0"/>
+                        <GradientStop Color="DodgerBlue" Offset="1"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <TextBox  MinWidth="200"
+                          Margin="5"
+                          Text="{Binding Land.Naam, UpdateSourceTrigger=PropertyChanged}" 
+                          materialDesign:HintAssist.Hint="Naam"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                
+                <TextBox  MinWidth="200"
+                          Margin="5"
+                          Text="{Binding Land.EersteTaal, UpdateSourceTrigger=PropertyChanged}" 
+                          materialDesign:HintAssist.Hint="Eerste Taal"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                
+                <TextBox  MinWidth="200"
+                          Margin="5"
+                          Text="{Binding Land.AantalInwooners, UpdateSourceTrigger=PropertyChanged}" 
+                          materialDesign:HintAssist.Hint="Populatie"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                <DatePicker  MinWidth="200"
+                             Margin="5"
+                             SelectedDate="{Binding Land.AantalInwoonersDatum, StringFormat={}{0:dd-MM-yyyy}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             materialDesign:HintAssist.Hint="Aantal Inwooners Geupdated"
+                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"/>
+
+                <TextBox  MinWidth="200"
+                          Margin="5"
+                          Text="{Binding Land.Hooftstad, UpdateSourceTrigger=PropertyChanged}" 
+                          materialDesign:HintAssist.Hint="Hoofdstad"
+                          materialDesign:TextFieldAssist.HasClearButton="True"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                <TextBox MinWidth="200"
+                           Margin="5"
+                           Text="{Binding Land.Bnp, UpdateSourceTrigger=PropertyChanged}" 
+                           materialDesign:HintAssist.Hint="bnp"
+                           materialDesign:TextFieldAssist.HasClearButton="True"
+                           Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                <DatePicker  MinWidth="200"
+                             Margin="5"
+                             SelectedDate="{Binding Land.BnpDatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd-MM-yyyy}}" 
+                             materialDesign:HintAssist.Hint="bnp Datum Geupdate"
+                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"/>
+                
+                <DatePicker  MinWidth="200"
+                             Margin="5"
+                             SelectedDate="{Binding Land.Gevonden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd-MM-yyyy}}" 
+                             materialDesign:HintAssist.Hint="Land Gevonden Op"
+                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"/>
+
+                
+                <StackPanel Orientation="Horizontal" Margin="5,20,5,10">
+                    <Button Content="Add Land" Command="{Binding AddLandCommand}" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Margin="0,0,10,0" />
+                    <Button Content="Update Land" Command="{Binding UpdateLandCommand}" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
